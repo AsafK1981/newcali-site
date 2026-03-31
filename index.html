@@ -198,7 +198,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 .ba-slider{position:relative;width:100%;aspect-ratio:3/2.2;overflow:hidden;cursor:ew-resize;user-select:none;touch-action:none;display:block}
 .ba-img-after{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;display:block}
 .ba-before-clip{position:absolute;top:0;left:0;height:100%;width:25%;overflow:hidden}
-.ba-img-before{position:absolute;top:0;left:0;height:100%;object-fit:cover;pointer-events:none;display:block}
+.ba-img-before{position:absolute;top:0;left:0;height:100%;object-fit:cover;pointer-events:none;display:block;max-width:none!important;}
 .ba-divider{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.85);left:25%;transform:translateX(-50%);pointer-events:none}
 .ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:white;border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.22);pointer-events:none;gap:2px;animation:handlePulse 1.8s ease-in-out infinite;}
 @keyframes handlePulse{0%,100%{box-shadow:0 2px 10px rgba(0,0,0,.22),0 0 0 0 rgba(58,125,68,.4)}50%{box-shadow:0 2px 10px rgba(0,0,0,.22),0 0 0 10px rgba(58,125,68,0)}}
@@ -1719,7 +1719,7 @@ document.addEventListener('click', function(e){
         </div>
         <div class="cdet">
           <div class="cdet-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="cdet-txt"><span>Email</span><a href="#" onclick="this.href='mailto:Info@NewCaliConstruction.com';return false;" style="color:var(--text);text-decoration:none;font-size:14px;font-weight:600;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text)'"><span class="__cf_email__" data-cfemail="773e1911183739120034161b1e3418190403050214031e18195914181a">[email&#160;protected]</span></a></div>
+          <div class="cdet-txt"><span>Email</span><a href="mailto:Info@NewCaliConstruction.com" style="color:var(--text);text-decoration:none;font-size:14px;font-weight:600;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text)'">Info@NewCaliConstruction.com</a></div>
         </div>
         <div class="cdet">
           <div class="cdet-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
@@ -1825,76 +1825,94 @@ document.addEventListener('click', function(e){
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* Before/After Sliders */
 function initBA(wId,cId,bId,dId){
-  var wrap=document.getElementById(wId),clip=document.getElementById(cId),
-      bImg=document.getElementById(bId),div=document.getElementById(dId);
-  var dragging=false,pct=0.25,animated=false;
+  var wrap=document.getElementById(wId);
+  var clip=document.getElementById(cId);
+  var bImg=document.getElementById(bId);
+  var div=document.getElementById(dId);
+  var dragging=false;
+  var pct=0.25;
 
   function apply(p){
-    pct=Math.max(.02,Math.min(.98,p));
+    pct=Math.max(0.01,Math.min(0.99,p));
+    var w=wrap.offsetWidth;
     clip.style.width=(pct*100)+'%';
-    bImg.style.width=wrap.offsetWidth+'px';
+    bImg.style.width=w+'px';
+    bImg.style.maxWidth='none';
     div.style.left=(pct*100)+'%';
   }
 
-  function getX(e){return e.touches?e.touches[0].clientX:e.clientX}
+  function getX(e){
+    return e.touches ? e.touches[0].clientX : e.clientX;
+  }
+
   function onMove(e){
-    if(!dragging)return;
+    if(!dragging) return;
     var r=wrap.getBoundingClientRect();
     apply((getX(e)-r.left)/r.width);
   }
 
-  wrap.addEventListener('mousedown',function(e){dragging=true;animated=true;onMove(e);e.preventDefault();});
-  wrap.addEventListener('touchstart',function(e){dragging=true;animated=true;onMove(e);e.stopPropagation();},{passive:true});
+  // Mouse
+  wrap.addEventListener('mousedown',function(e){
+    dragging=true;
+    onMove(e);
+    e.preventDefault();
+  });
   window.addEventListener('mousemove',onMove);
-  window.addEventListener('touchmove',function(e){if(dragging){e.preventDefault();onMove(e);}},{passive:false});
   window.addEventListener('mouseup',function(){dragging=false;});
+
+  // Touch
+  wrap.addEventListener('touchstart',function(e){
+    dragging=true;
+    onMove(e);
+  },{passive:true});
+  window.addEventListener('touchmove',function(e){
+    if(dragging){e.preventDefault();onMove(e);}
+  },{passive:false});
   window.addEventListener('touchend',function(){dragging=false;});
+
+  // Resize
   window.addEventListener('resize',function(){apply(pct);});
 
-  apply(0.25);
-  setTimeout(function(){apply(0.25);},200);
-  setTimeout(function(){apply(0.25);},600);
-  // Re-apply when images finish loading
-  if(bImg.complete){apply(0.25);}else{bImg.onload=function(){apply(0.25);};}
+  // Init — run multiple times to catch late renders
+  function init(){apply(0.25);}
+  init();
+  setTimeout(init,100);
+  setTimeout(init,300);
+  setTimeout(init,800);
+  setTimeout(init,1500);
 
-  // Auto-demo animation: slide right then back to 25%, repeat once
+  // When images load
+  var imgs=wrap.querySelectorAll('img');
+  imgs.forEach(function(img){
+    if(!img.complete){img.addEventListener('load',function(){setTimeout(init,50);});}
+  });
+
+  // Auto-demo animation
+  var animated=false;
   function runDemo(){
     if(animated) return;
-    var start=0.25, end=0.72;
-    var duration=900, steps=60, step=0;
-    var interval=setInterval(function(){
-      if(animated){clearInterval(interval);return;}
+    var start=0.25,end=0.72,steps=60,step=0;
+    var iv=setInterval(function(){
+      if(animated){clearInterval(iv);return;}
       step++;
       var t=step/steps;
-      // ease in-out
       var ease=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-      if(step<=steps){
-        apply(start+(end-start)*ease);
-      } else if(step<=steps*2){
-        var t2=(step-steps)/steps;
-        var ease2=t2<.5?2*t2*t2:1-Math.pow(-2*t2+2,2)/2;
-        apply(end-(end-start)*ease2);
-      } else {
-        clearInterval(interval);
-        // pause then repeat once more
-        setTimeout(function(){
-          if(!animated) runDemo();
-        },2000);
-      }
-    },duration/steps);
+      if(step<=steps){apply(start+(end-start)*ease);}
+      else if(step<=steps*2){var t2=(step-steps)/steps;var e2=t2<.5?2*t2*t2:1-Math.pow(-2*t2+2,2)/2;apply(end-(end-start)*e2);}
+      else{clearInterval(iv);setTimeout(function(){if(!animated)runDemo();},2000);}
+    },900/steps);
   }
-
-  // Start demo when slider enters viewport
-  var observer=new IntersectionObserver(function(entries){
+  var obs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){
-        setTimeout(runDemo,600);
-        observer.unobserve(wrap);
-      }
+      if(e.isIntersecting){setTimeout(runDemo,600);obs.unobserve(wrap);}
     });
-  },{threshold:0.5});
-  observer.observe(wrap);
+  },{threshold:0.4});
+  obs.observe(wrap);
+
+  wrap.addEventListener('mousedown',function(){animated=true;},{once:true});
+  wrap.addEventListener('touchstart',function(){animated=true;},{once:true,passive:true});
 }
+
 initBA('sl1','sl1c','sl1b','sl1d');
 initBA('sl2','sl2c','sl2b','sl2d');
 
