@@ -195,7 +195,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 .ba-section-in{max-width:1200px;margin:0 auto;padding:0 40px}
 .ba-hdr{text-align:center;margin-bottom:40px}
 .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
-.ba-slider{position:relative;width:100%;aspect-ratio:3/2.2;overflow:hidden;cursor:ew-resize;user-select:none;touch-action:pan-y;display:block}
+.ba-slider{position:relative;width:100%;aspect-ratio:3/2.2;overflow:hidden;cursor:ew-resize;user-select:none;touch-action:none;display:block}
 .ba-img-after{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;pointer-events:none;display:block}
 .ba-before-clip{position:absolute;top:0;left:0;height:100%;width:25%;overflow:hidden}
 .ba-img-before{position:absolute;top:0;left:0;height:100%;object-fit:cover;pointer-events:none;display:block}
@@ -340,7 +340,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.72);padding:52px 60px 
   .nav-logo-img{height:48px}
   .nav-phone{font-size:12px}
   .btn-nav{padding:8px 14px;font-size:11px}
-  .hero{height:50vh;min-height:360px}
+  .hero{height:60vh;min-height:400px}
   .hero h1{font-size:clamp(28px,7vw,48px)}
   .hero-sub{font-size:14px}
   .hero-btns{flex-direction:column;align-items:stretch;gap:10px;width:100%;max-width:300px;margin:0 auto}
@@ -383,6 +383,13 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.72);padding:52px 60px 
   .foot-bot{flex-direction:column;text-align:center;gap:8px}
   .hdr-c{margin-bottom:36px}
   .sec-title{font-size:clamp(22px,5vw,34px)}
+}
+
+@media(max-width:960px){
+  .hero-overlay{background:rgba(0,0,0,.22)!important}
+  .hero video{object-position:center center;transform:none!important}
+  .hero-stars{font-size:18px;margin-bottom:10px}
+  .hero-sub{font-size:13px;margin-bottom:20px}
 }
 @media(max-width:560px){
   .svc-grid{grid-template-columns:1fr}
@@ -608,13 +615,13 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
 .testi-carousel-wrap {
   overflow: hidden;
   padding: 30px 0 40px;
-  mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 .testi-carousel {
   display: flex;
   gap: 20px;
-  animation: carouselScroll 70s linear infinite;
+  animation: carouselScroll 70s linear infinite; animation-delay: 0s;
   width: max-content;
   touch-action: pan-y;
   user-select: none;
@@ -652,6 +659,24 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
 .nav-logo-sub { color: var(--muted) !important; }
 .nav-phone { color: var(--green-dk) !important; }
 a[href^="tel"] { color: inherit; text-decoration: none; }
+
+/* ── MOBILE NAV HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;cursor:pointer;padding:8px;background:none;border:none;z-index:400;width:40px;height:40px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s ease;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:#fff;border-top:3px solid var(--green);z-index:299;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:16px 24px;color:var(--text);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--border);transition:background .15s}
+.mobile-menu a:hover{background:#f5f5f5;color:var(--green)}
+.mobile-menu .mm-cta{background:var(--green);color:#fff!important;text-align:center;font-weight:700;margin:16px;border-radius:4px;border:none!important;padding:15px 24px}
+.mobile-menu .mm-cta:hover{background:var(--green-dk)!important}
+@media(max-width:960px){
+  .hamburger{display:flex}
+  .nav-phone{display:none}
+  .btn-nav{display:none}
+}
 </style>
 <script type="application/ld+json">
 {
@@ -694,12 +719,12 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="portfolio.html">Recent Transformations</a>
+  <a href="portfolio.html" onclick="closeMenu()">Recent Transformations</a>
   <a href="#services" onclick="closeMenu()">Services</a>
   <a href="#testimonials" onclick="closeMenu()">Reviews</a>
   <a href="#contact" onclick="closeMenu()">Contact</a>
-  <a href="tel:8002161005">(800) 216-1005</a>
-  <a href="#contact" onclick="closeMenu()">Get Free Estimate</a>
+  <a href="tel:8002161005" style="color:var(--green-dk);font-weight:600;">📞 (800) 216-1005</a>
+  <a href="#contact" class="mm-cta" onclick="closeMenu()">Get a Free Estimate →</a>
 </div>
 <script>
 function toggleMenu(){
@@ -1512,8 +1537,8 @@ document.addEventListener('click', function(e){
 <style>
 .cc-track{overflow:hidden;width:100%;}
 .cc-inner{display:flex;gap:14px;width:max-content;}
-.cc-track-r1 .cc-inner{animation:ccScroll1 55s linear infinite;}
-.cc-track-r2 .cc-inner{animation:ccScroll2 65s linear infinite;}
+.cc-track-r1 .cc-inner{animation:ccScroll1 55s linear infinite;animation-delay:0s;}
+.cc-track-r2 .cc-inner{animation:ccScroll2 65s linear infinite;animation-delay:0s;}
 .cc-track-r1:hover .cc-inner,.cc-track-r2:hover .cc-inner{animation-play-state:paused;}
 @keyframes ccScroll1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @keyframes ccScroll2{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
@@ -1819,15 +1844,18 @@ function initBA(wId,cId,bId,dId){
   }
 
   wrap.addEventListener('mousedown',function(e){dragging=true;animated=true;onMove(e);e.preventDefault();});
-  wrap.addEventListener('touchstart',function(e){dragging=true;animated=true;onMove(e);},{passive:true});
+  wrap.addEventListener('touchstart',function(e){dragging=true;animated=true;onMove(e);e.stopPropagation();},{passive:true});
   window.addEventListener('mousemove',onMove);
-  window.addEventListener('touchmove',function(e){if(dragging)onMove(e);},{passive:true});
+  window.addEventListener('touchmove',function(e){if(dragging){e.preventDefault();onMove(e);}},{passive:false});
   window.addEventListener('mouseup',function(){dragging=false;});
   window.addEventListener('touchend',function(){dragging=false;});
   window.addEventListener('resize',function(){apply(pct);});
 
   apply(0.25);
-  setTimeout(function(){apply(0.25);},400);
+  setTimeout(function(){apply(0.25);},200);
+  setTimeout(function(){apply(0.25);},600);
+  // Re-apply when images finish loading
+  if(bImg.complete){apply(0.25);}else{bImg.onload=function(){apply(0.25);};}
 
   // Auto-demo animation: slide right then back to 25%, repeat once
   function runDemo(){
@@ -1955,13 +1983,15 @@ async function submitForm(e) {
   });
 })();
 
-/* ── Hero parallax ── */
-window.addEventListener('scroll', function() {
-  var video = document.querySelector('.hero video');
-  if (!video) return;
-  var scrolled = window.pageYOffset;
-  video.style.transform = 'translateY(' + (scrolled * 0.4) + 'px) scale(1.1)';
-}, {passive: true});
+/* ── Hero parallax (desktop only) ── */
+if(window.innerWidth > 960) {
+  window.addEventListener('scroll', function() {
+    var video = document.querySelector('.hero video');
+    if (!video) return;
+    var scrolled = window.pageYOffset;
+    video.style.transform = 'translateY(' + (scrolled * 0.3) + 'px) scale(1.05)';
+  }, {passive: true});
+}
 
 /* ── Scroll reveal ── */
 document.addEventListener('DOMContentLoaded', function() {
