@@ -618,35 +618,6 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-
-@media(max-width:960px){
-  .testi-section{overflow:visible!important}
-  .testi-carousel-wrap{display:none!important}
-  .testi-mobile-scroll{
-    display:flex!important;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    gap:14px;
-    padding:12px 16px 24px;
-    width:100%;
-    box-sizing:border-box;
-    scroll-snap-type:x mandatory;
-  }
-  .cc-row{display:none!important}
-  .crew-carousel{overflow:visible!important}
-  .cc-mobile-scroll{
-    display:flex!important;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    gap:10px;
-    padding:12px 16px 24px;
-    scroll-snap-type:x proximity;
-  }
-}
-@media(min-width:961px){
-  .testi-mobile-scroll{display:none!important}
-  .cc-mobile-scroll{display:none!important}
-}
 </style>
 </head>
 <body>
@@ -706,49 +677,6 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
     <div class="hero-btns">
       <a href="#contact" class="btn-green">Get Your FREE Estimate</a>
       <a href="portfolio.html" class="btn-wht">See Recent Projects</a>
-    </div>
-  </div>
-
-  <div class="testi-mobile-scroll">
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Amazing work on our kitchen remodel! Professional, on time, stunning results.&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Jonathan B. &bull; Culver City</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;New Cali did an incredible job with our bathroom. Fast, clean, and truly professional.&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Tim Y. &bull; Marina Del Rey</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Garage converted to ADU — Asaf and his team were fantastic from start to finish!&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Nyoka B. &bull; Inglewood</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Best contractor in LA. Transparent pricing, quality work, cleaned up every day.&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Martin P. &bull; El Segundo</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Our full home remodel exceeded every expectation. Simply the best in the business!&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Gail S. &bull; Playa Vista</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Outstanding kitchen remodel. Professional crew, communicative, flawless work.&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Andrew H. &bull; Hawthorne</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Hired for bathroom remodel and fell in love with the result. Will use again!&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Trisha L. &bull; Culver City</div>
-    </div>
-    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
-      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;They remodeled our entire first floor. On budget, on time, zero surprises. 10/10.&rdquo;</p>
-      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Joe E. &bull; Los Angeles</div>
     </div>
   </div>
 </section>
@@ -1564,7 +1492,7 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
       <p class="eyebrow">Get in Touch</p>
       <h2 class="sec-title">Let's Build<br>Something <em>Beautiful</em></h2>
       <p>Free in-home consultation. No pressure - just honest expertise and a clear plan to bring your vision to life.</p>
-      <video autoplay muted loop playsinline style="width:100%;border-radius:6px;height:260px;object-fit:cover;display:block;margin-top:24px;margin-bottom:22px;filter:brightness(1.35) contrast(1.05);">
+      <video autoplay muted loop playsinline style="width:100%;border-radius:6px;height:260px;object-fit:cover;display:block;margin-top:24px;margin-bottom:22px;">
         <source src="promo.mp4" type="video/mp4">
       </video>
       <div class="cdets">
@@ -1926,25 +1854,6 @@ async function submitExit(e) {
   } catch(err) {}
   document.getElementById('exitPopup').innerHTML = '<div style="padding:48px;text-align:center;"><div style="font-size:44px;margin-bottom:12px">🎉</div><h3 style="font-family:Merriweather,serif;color:var(--green-dk);font-size:22px;margin-bottom:8px;">Thanks! We\'ll be in touch soon.</h3><p style="color:var(--muted);">Or call us now at <a href="tel:8002161005" style="color:var(--green);font-weight:600;">(800) 216-1005</a></p><button onclick="closeExit()" style="margin-top:20px;background:var(--green);color:white;border:none;padding:10px 24px;border-radius:4px;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;">Close</button></div>';
 }
-</script>
-<script>
-(function(){
-  if(window.innerWidth > 960) return;
-  if(typeof allImgs === 'undefined') return;
-  var section = document.querySelector('.crew-carousel');
-  if(!section) return;
-  var div = document.createElement('div');
-  div.className = 'cc-mobile-scroll';
-  div.style.cssText = 'display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:10px;padding:12px 16px 24px;';
-  allImgs.slice(0,12).forEach(function(src){
-    var img = document.createElement('img');
-    img.src = src;
-    img.loading = 'lazy';
-    img.style.cssText = 'flex-shrink:0;width:160px;height:200px;object-fit:cover;border-radius:8px;display:block;';
-    div.appendChild(img);
-  });
-  section.appendChild(div);
-})();
 </script>
 </body>
 </html>
