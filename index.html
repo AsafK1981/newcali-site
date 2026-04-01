@@ -171,8 +171,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 .btn-nav:hover{background:var(--green-dk)}
 
 /* HERO */
-.hero{position:relative;height:100vh;min-height:540px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
-.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center 30%;transform:none}
+.hero{position:relative;height:100svh;min-height:500px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center center;transform:scale(1.0);object-fit:cover;}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.30)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
@@ -774,18 +774,16 @@ document.addEventListener('click', function(e){
 <section class="hero">
   <video autoplay muted loop playsinline src="kitchen.mp4"></video>
   <div class="hero-overlay"></div>
-  <div class="hero-content" style="display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:80vh;padding:12px 24px 40px;">
-    <!-- Buttons pinned to very top -->
-    <div class="hero-btns" style="opacity:0;animation:fadeUp .7s .1s forwards;margin:0;">
-      <a href="#contact" class="btn-green">Get FREE Estimate</a>
-      <a href="portfolio.html" class="btn-wht">See Projects</a>
-    </div>
-    <!-- Text in center-bottom -->
-    <div>
-      <div class="hero-stars">★★★★★</div>
-      <h1>Transform Your LA Home<br>Without the Stress</h1>
-      <p class="hero-sub">Real crews. Real quality. No hidden fees — just beautiful results.</p>
-    </div>
+  <!-- Buttons: transparent, side by side, pinned to very top of video -->
+  <div style="position:absolute;top:8px;left:0;right:0;z-index:10;display:flex;gap:8px;justify-content:center;padding:0 16px;">
+    <a href="#contact" style="flex:1;max-width:180px;text-align:center;background:rgba(255,255,255,.15);color:white;border:1.5px solid rgba(255,255,255,.75);padding:9px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(4px);">Get FREE Estimate</a>
+    <a href="portfolio.html" style="flex:1;max-width:180px;text-align:center;background:rgba(255,255,255,.15);color:white;border:1.5px solid rgba(255,255,255,.75);padding:9px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(4px);">See Projects</a>
+  </div>
+  <!-- Text centered in video -->
+  <div class="hero-content">
+    <div class="hero-stars">★★★★★</div>
+    <h1>Transform Your LA Home<br>Without the Stress</h1>
+    <p class="hero-sub">Real crews. Real quality. No hidden fees — just beautiful results.</p>
   </div>
 </section>
 
@@ -2125,49 +2123,119 @@ async function submitExit(e) {
 <script>
 
 
-<script>
-/* Carousel touch drag */
-(function(){
-  function drag(wrap, track){
-    if(!wrap||!track) return;
-    var x0=0, ox=0, vx=0, last=0, down=false, raf=null, timer=null;
-    function curX(){
-      var m=window.getComputedStyle(track).transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+)/);
-      return m?+m[1]:0;
-    }
-    function stop(){
-      ox=curX();
-      track.style.animation='none';
-      track.style.animationPlayState='paused';
-      track.style.transform='translateX('+ox+'px)';
-      if(raf){cancelAnimationFrame(raf);raf=null;}
-      if(timer){clearTimeout(timer);timer=null;}
-    }
-    function go(){
-      vx*=0.9; ox+=vx;
-      track.style.transform='translateX('+ox+'px)';
-      if(Math.abs(vx)>.3){ raf=requestAnimationFrame(go); }
-      else { timer=setTimeout(function(){ track.style.transform=''; track.style.animation=''; },1200); }
-    }
-    wrap.addEventListener('touchstart',function(e){down=true;x0=last=e.touches[0].clientX;vx=0;stop();},{passive:true});
-    wrap.addEventListener('touchmove',function(e){if(!down)return;var x=e.touches[0].clientX;vx=x-last;last=x;ox+=vx;track.style.transform='translateX('+ox+'px)';},{passive:true});
-    wrap.addEventListener('touchend',function(){down=false;raf=requestAnimationFrame(go);},{passive:true});
-  }
-  drag(document.querySelector('.testi-carousel-wrap'), document.getElementById('testiCarousel'));
-  document.querySelectorAll('.cc-track').forEach(function(t){drag(t,t.querySelector('.cc-inner'));});
-})();
 
-/* Make testi-cards clickable to Yelp */
-document.querySelectorAll('.testi-card').forEach(function(card){
-  card.style.cursor='pointer';
-  var moved=false;
-  card.addEventListener('touchstart',function(){moved=false;},{passive:true});
-  card.addEventListener('touchmove',function(){moved=true;},{passive:true});
-  card.addEventListener('touchend',function(){ if(!moved){ window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank'); } });
-  card.addEventListener('click',function(e){
-    if(e.target.tagName!=='A'){ window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank'); }
+<script>
+/* CAROUSEL TOUCH - clean simple version */
+(function() {
+  function addTouch(container, slider) {
+    if (!container || !slider) return;
+    
+    var isDragging = false;
+    var startX = 0;
+    var startTime = 0;
+    var lastX = 0;
+    var velocity = 0;
+    var currentTranslate = 0;
+    var raf = null;
+    var resumeTimer = null;
+
+    // Get current animated position
+    function getLiveX() {
+      var transform = window.getComputedStyle(slider).transform;
+      if (!transform || transform === 'none') return 0;
+      var parts = transform.split(',');
+      if (parts.length >= 5) return parseFloat(parts[4]);
+      return 0;
+    }
+
+    // Stop animation, lock in current position
+    function lockPosition() {
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
+      var liveX = getLiveX();
+      slider.style.animation = 'none';
+      slider.style.transform = 'translateX(' + liveX + 'px)';
+      currentTranslate = liveX;
+    }
+
+    // Let animation run again
+    function unlockPosition() {
+      slider.style.animation = '';
+      slider.style.transform = '';
+      currentTranslate = 0;
+    }
+
+    container.addEventListener('touchstart', function(e) {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      lastX = startX;
+      startTime = Date.now();
+      velocity = 0;
+      lockPosition();
+    }, { passive: true });
+
+    container.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var x = e.touches[0].clientX;
+      var dx = x - lastX;
+      velocity = dx;
+      lastX = x;
+      currentTranslate += dx;
+      slider.style.transform = 'translateX(' + currentTranslate + 'px)';
+    }, { passive: true });
+
+    container.addEventListener('touchend', function() {
+      isDragging = false;
+      
+      // Apply momentum
+      function coast() {
+        velocity *= 0.92;
+        currentTranslate += velocity;
+        slider.style.transform = 'translateX(' + currentTranslate + 'px)';
+        if (Math.abs(velocity) > 0.5) {
+          raf = requestAnimationFrame(coast);
+        } else {
+          // Resume auto-scroll after 2s
+          resumeTimer = setTimeout(unlockPosition, 2000);
+        }
+      }
+      raf = requestAnimationFrame(coast);
+    }, { passive: true });
+  }
+
+  // Apply to review carousel
+  addTouch(
+    document.querySelector('.testi-carousel-wrap'),
+    document.querySelector('#testiCarousel')
+  );
+
+  // Apply to crew carousels
+  var ccTracks = document.querySelectorAll('.cc-track');
+  for (var i = 0; i < ccTracks.length; i++) {
+    addTouch(ccTracks[i], ccTracks[i].querySelector('.cc-inner'));
+  }
+
+  // Make testimonial cards clickable (detect drag vs tap)
+  var cards = document.querySelectorAll('.testi-card');
+  cards.forEach(function(card) {
+    var startTapX = 0, moved = false;
+    card.addEventListener('touchstart', function(e) {
+      startTapX = e.touches[0].clientX;
+      moved = false;
+    }, { passive: true });
+    card.addEventListener('touchmove', function(e) {
+      if (Math.abs(e.touches[0].clientX - startTapX) > 8) moved = true;
+    }, { passive: true });
+    card.addEventListener('touchend', function() {
+      if (!moved) window.open('https://www.yelp.com/biz/new-cali-construction-culver-city', '_blank');
+    }, { passive: true });
+    card.addEventListener('click', function(e) {
+      if (e.target.tagName !== 'A') window.open('https://www.yelp.com/biz/new-cali-construction-culver-city', '_blank');
+    });
+    card.style.cursor = 'pointer';
   });
-});
+})();
 </script>
+
 </body>
 </html>
