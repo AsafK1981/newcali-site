@@ -172,16 +172,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 
 /* HERO */
 .hero{position:relative;height:100vh;min-height:540px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
-.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center center;transform:scale(0.85)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center 30%;transform:none}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.30)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
-.hero h1{font-family:'Merriweather',serif;font-size:clamp(34px,5vw,60px);font-weight:700;line-height:1.2;color:white;margin-bottom:16px;text-shadow:0 2px 16px rgba(0,0,0,.4);opacity:0;animation:fadeUp .7s .3s forwards}
-.hero-sub{font-size:16px;color:rgba(255,255,255,.9);line-height:1.65;max-width:460px;margin:0 auto 30px;text-shadow:0 1px 6px rgba(0,0,0,.35);opacity:0;animation:fadeUp .7s .5s forwards}
+.hero h1{font-family:'Merriweather',serif;font-size:clamp(24px,4vw,48px);font-weight:700;line-height:1.2;color:white;margin-bottom:12px;text-shadow:0 2px 16px rgba(0,0,0,.4);opacity:0;animation:fadeUp .7s .3s forwards}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.9);line-height:1.65;max-width:360px;margin:0 auto 20px;text-shadow:0 1px 6px rgba(0,0,0,.35);opacity:0;animation:fadeUp .7s .5s forwards}
 .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .65s forwards}
-.btn-green{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;padding:13px 28px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:background .2s,transform .2s}
+.btn-green{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;padding:10px 20px;text-decoration:none;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:background .2s,transform .2s}
 .btn-green:hover{background:var(--green-dk);transform:translateY(-1px)}
-.btn-wht{display:inline-flex;align-items:center;gap:7px;background:white;color:var(--green-dk);padding:13px 28px;text-decoration:none;border-radius:4px;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:background .2s}
+.btn-wht{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);color:white;border:1.5px solid rgba(255,255,255,.7);padding:10px 20px;text-decoration:none;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;transition:background .2s}
 .btn-wht:hover{background:#f0f0f0}
 
 /* TRUST BAR */
@@ -774,13 +774,17 @@ document.addEventListener('click', function(e){
 <section class="hero">
   <video autoplay muted loop playsinline src="kitchen.mp4"></video>
   <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-stars">★★★★★</div>
-    <h1>Transform Your LA Home<br>Without the Stress</h1>
-    <p class="hero-sub">Real crews. Real quality. No hidden fees. No endless delays - just beautiful results.</p>
-    <div class="hero-btns">
-      <a href="#contact" class="btn-green">Get Your FREE Estimate</a>
-      <a href="portfolio.html" class="btn-wht">See Recent Projects</a>
+  <div class="hero-content" style="display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:80vh;padding:12px 24px 40px;">
+    <!-- Buttons pinned to very top -->
+    <div class="hero-btns" style="opacity:0;animation:fadeUp .7s .1s forwards;margin:0;">
+      <a href="#contact" class="btn-green">Get FREE Estimate</a>
+      <a href="portfolio.html" class="btn-wht">See Projects</a>
+    </div>
+    <!-- Text in center-bottom -->
+    <div>
+      <div class="hero-stars">★★★★★</div>
+      <h1>Transform Your LA Home<br>Without the Stress</h1>
+      <p class="hero-sub">Real crews. Real quality. No hidden fees — just beautiful results.</p>
     </div>
   </div>
 </section>
@@ -2119,82 +2123,51 @@ async function submitExit(e) {
 </script>
 
 <script>
-/* ── Carousel Touch + Auto-scroll ── */
+
+
+<script>
+/* Carousel touch drag */
 (function(){
-  function makeScrollable(wrap, track){
+  function drag(wrap, track){
     if(!wrap||!track) return;
-    var touching=false, startX=0, lastX=0, velX=0;
-    var baseOffset=0, currentOffset=0;
-    var resumeTimer=null, rafId=null;
-
-    function getComputedX(){
-      var t=window.getComputedStyle(track).transform;
-      if(!t||t==='none') return 0;
-      var m=t.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+)/);
-      return m ? parseFloat(m[1]) : 0;
+    var x0=0, ox=0, vx=0, last=0, down=false, raf=null, timer=null;
+    function curX(){
+      var m=window.getComputedStyle(track).transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+)/);
+      return m?+m[1]:0;
     }
-
-    function freeze(){
-      if(rafId){cancelAnimationFrame(rafId);rafId=null;}
-      currentOffset=getComputedX();
-      track.style.transition='none';
-      track.style.animationPlayState='paused';
+    function stop(){
+      ox=curX();
       track.style.animation='none';
-      track.style.transform='translateX('+currentOffset+'px)';
-      baseOffset=currentOffset;
+      track.style.animationPlayState='paused';
+      track.style.transform='translateX('+ox+'px)';
+      if(raf){cancelAnimationFrame(raf);raf=null;}
+      if(timer){clearTimeout(timer);timer=null;}
     }
-
-    function resume(){
-      track.style.transform='';
-      track.style.transition='';
-      track.style.animation='';
+    function go(){
+      vx*=0.9; ox+=vx;
+      track.style.transform='translateX('+ox+'px)';
+      if(Math.abs(vx)>.3){ raf=requestAnimationFrame(go); }
+      else { timer=setTimeout(function(){ track.style.transform=''; track.style.animation=''; },1200); }
     }
-
-    function coast(){
-      if(touching) return;
-      velX*=0.92;
-      currentOffset+=velX;
-      track.style.transform='translateX('+currentOffset+'px)';
-      if(Math.abs(velX)>0.5){
-        rafId=requestAnimationFrame(coast);
-      } else {
-        resumeTimer=setTimeout(resume, 1500);
-      }
-    }
-
-    wrap.addEventListener('touchstart',function(e){
-      touching=true;
-      startX=e.touches[0].clientX;
-      lastX=startX;
-      velX=0;
-      freeze();
-      if(resumeTimer){clearTimeout(resumeTimer);resumeTimer=null;}
-    },{passive:true});
-
-    wrap.addEventListener('touchmove',function(e){
-      if(!touching) return;
-      var x=e.touches[0].clientX;
-      velX=x-lastX;
-      lastX=x;
-      currentOffset=baseOffset+(x-startX);
-      track.style.transform='translateX('+currentOffset+'px)';
-    },{passive:true});
-
-    wrap.addEventListener('touchend',function(){
-      touching=false;
-      baseOffset=currentOffset;
-      rafId=requestAnimationFrame(coast);
-    },{passive:true});
+    wrap.addEventListener('touchstart',function(e){down=true;x0=last=e.touches[0].clientX;vx=0;stop();},{passive:true});
+    wrap.addEventListener('touchmove',function(e){if(!down)return;var x=e.touches[0].clientX;vx=x-last;last=x;ox+=vx;track.style.transform='translateX('+ox+'px)';},{passive:true});
+    wrap.addEventListener('touchend',function(){down=false;raf=requestAnimationFrame(go);},{passive:true});
   }
-
-  makeScrollable(
-    document.querySelector('.testi-carousel-wrap'),
-    document.getElementById('testiCarousel')
-  );
-  document.querySelectorAll('.cc-track').forEach(function(t){
-    makeScrollable(t,t.querySelector('.cc-inner'));
-  });
+  drag(document.querySelector('.testi-carousel-wrap'), document.getElementById('testiCarousel'));
+  document.querySelectorAll('.cc-track').forEach(function(t){drag(t,t.querySelector('.cc-inner'));});
 })();
 
+/* Make testi-cards clickable to Yelp */
+document.querySelectorAll('.testi-card').forEach(function(card){
+  card.style.cursor='pointer';
+  var moved=false;
+  card.addEventListener('touchstart',function(){moved=false;},{passive:true});
+  card.addEventListener('touchmove',function(){moved=true;},{passive:true});
+  card.addEventListener('touchend',function(){ if(!moved){ window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank'); } });
+  card.addEventListener('click',function(e){
+    if(e.target.tagName!=='A'){ window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank'); }
+  });
+});
+</script>
 </body>
 </html>
