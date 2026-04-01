@@ -779,7 +779,7 @@ document.addEventListener('click', function(e){
   <video autoplay muted loop playsinline src="kitchen.mp4"></video>
   <div class="hero-overlay"></div>
   <!-- Hero CTA buttons — top of video -->
-  <div style="position:absolute;top:90px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:90%;max-width:420px;">
+  <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:90%;max-width:400px;">
     <a href="#contact" class="btn-green" style="flex:1;min-width:160px;justify-content:center;text-align:center;">Get Your FREE Estimate</a>
     <a href="portfolio.html" class="btn-wht" style="flex:1;min-width:160px;justify-content:center;text-align:center;">See Recent Projects</a>
   </div>
@@ -1544,9 +1544,9 @@ document.addEventListener('click', function(e){
 
 <style>
 .cc-track{overflow:hidden;width:100%;touch-action:pan-y;cursor:grab;}
-.cc-inner{display:flex;gap:14px;width:max-content;}
-.cc-track-r1 .cc-inner{animation:ccScroll1 55s linear infinite;animation-delay:0s;}
-.cc-track-r2 .cc-inner{animation:ccScroll2 65s linear infinite;animation-delay:0s;}
+.cc-inner{display:flex;gap:14px;width:max-content;will-change:transform;}
+.cc-track-r1 .cc-inner{animation:ccScroll1 30s linear infinite;}
+.cc-track-r2 .cc-inner{animation:ccScroll2 36s linear infinite;}
 .cc-track-r1:hover .cc-inner,.cc-track-r2:hover .cc-inner,.cc-inner.dragging{animation-play-state:paused;}
 @keyframes ccScroll1{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @keyframes ccScroll2{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
@@ -2128,60 +2128,77 @@ async function submitExit(e) {
 /* ── Carousel Touch + Auto-scroll ── */
 (function(){
   function makeScrollable(wrap, track){
-    if(!wrap || !track) return;
-    var isDown=false, startX=0, scrollLeft=0;
+    if(!wrap||!track) return;
+    var touching=false, startX=0, lastX=0, velX=0;
+    var baseOffset=0, currentOffset=0;
+    var resumeTimer=null, rafId=null;
 
-    // Pause animation and get current visual position
+    function getComputedX(){
+      var t=window.getComputedStyle(track).transform;
+      if(!t||t==='none') return 0;
+      var m=t.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+)/);
+      return m ? parseFloat(m[1]) : 0;
+    }
+
     function freeze(){
-      var rect = track.getBoundingClientRect();
-      var wrapRect = wrap.getBoundingClientRect();
-      var curX = rect.left - wrapRect.left;
-      track.style.animationPlayState = 'paused';
-      track.style.animation = 'none';
-      track.style.transform = 'translateX('+curX+'px)';
-      return curX;
+      if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+      currentOffset=getComputedX();
+      track.style.transition='none';
+      track.style.animationPlayState='paused';
+      track.style.animation='none';
+      track.style.transform='translateX('+currentOffset+'px)';
+      baseOffset=currentOffset;
     }
 
-    function unfreeze(){
-      track.style.transform = '';
-      track.style.animation = '';
+    function resume(){
+      track.style.transform='';
+      track.style.transition='';
+      track.style.animation='';
     }
 
-    var frozenX = 0, resumeTimer = null;
+    function coast(){
+      if(touching) return;
+      velX*=0.92;
+      currentOffset+=velX;
+      track.style.transform='translateX('+currentOffset+'px)';
+      if(Math.abs(velX)>0.5){
+        rafId=requestAnimationFrame(coast);
+      } else {
+        resumeTimer=setTimeout(resume, 1500);
+      }
+    }
 
-    wrap.addEventListener('touchstart', function(e){
-      isDown = true;
-      startX = e.touches[0].clientX;
-      frozenX = freeze();
-      if(resumeTimer) clearTimeout(resumeTimer);
-    }, {passive:true});
+    wrap.addEventListener('touchstart',function(e){
+      touching=true;
+      startX=e.touches[0].clientX;
+      lastX=startX;
+      velX=0;
+      freeze();
+      if(resumeTimer){clearTimeout(resumeTimer);resumeTimer=null;}
+    },{passive:true});
 
-    wrap.addEventListener('touchmove', function(e){
-      if(!isDown) return;
-      var dx = e.touches[0].clientX - startX;
-      track.style.transform = 'translateX('+(frozenX+dx)+'px)';
-    }, {passive:true});
+    wrap.addEventListener('touchmove',function(e){
+      if(!touching) return;
+      var x=e.touches[0].clientX;
+      velX=x-lastX;
+      lastX=x;
+      currentOffset=baseOffset+(x-startX);
+      track.style.transform='translateX('+currentOffset+'px)';
+    },{passive:true});
 
-    wrap.addEventListener('touchend', function(e){
-      isDown = false;
-      var dx = e.changedTouches[0].clientX - startX;
-      frozenX = frozenX + dx;
-      resumeTimer = setTimeout(function(){
-        track.style.transform = '';
-        track.style.animation = '';
-      }, 2500);
-    }, {passive:true});
+    wrap.addEventListener('touchend',function(){
+      touching=false;
+      baseOffset=currentOffset;
+      rafId=requestAnimationFrame(coast);
+    },{passive:true});
   }
 
-  // Review carousel
   makeScrollable(
     document.querySelector('.testi-carousel-wrap'),
     document.getElementById('testiCarousel')
   );
-
-  // Crew carousels
-  document.querySelectorAll('.cc-track').forEach(function(track){
-    makeScrollable(track, track.querySelector('.cc-inner'));
+  document.querySelectorAll('.cc-track').forEach(function(t){
+    makeScrollable(t,t.querySelector('.cc-inner'));
   });
 })();
 
