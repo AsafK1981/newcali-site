@@ -174,7 +174,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 .hero{position:relative;height:100vh;min-height:540px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center center}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.22)}
-.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
+.hero-content{position:absolute;z-index:2;text-align:center;padding:0 24px;max-width:680px;left:50%;transform:translateX(-50%);}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
 .hero h1{font-family:'Merriweather',serif;font-size:clamp(34px,5vw,60px);font-weight:700;line-height:1.2;color:white;margin-bottom:16px;text-shadow:0 2px 16px rgba(0,0,0,.4);opacity:0;animation:fadeUp .7s .3s forwards}
 .hero-sub{font-size:16px;color:rgba(255,255,255,.9);line-height:1.65;max-width:460px;margin:0 auto 30px;text-shadow:0 1px 6px rgba(0,0,0,.35);opacity:0;animation:fadeUp .7s .5s forwards}
@@ -628,7 +628,7 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
   touch-action: pan-y;
   user-select: none;
 }
-.testi-carousel:hover { animation-play-state: paused; }
+.testi-carousel:hover,.testi-carousel.dragging { animation-play-state: paused; }
 @keyframes carouselScroll {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -778,16 +778,16 @@ document.addEventListener('click', function(e){
 <section class="hero">
   <video autoplay muted loop playsinline src="kitchen.mp4"></video>
   <div class="hero-overlay"></div>
-  <div class="hero-content" style="display:flex;flex-direction:column;justify-content:space-between;height:70%;padding:20px 24px;">
-    <div class="hero-btns" style="margin:0;width:100%;max-width:420px;align-self:center;">
-      <a href="#contact" class="btn-green">Get Your FREE Estimate</a>
-      <a href="portfolio.html" class="btn-wht">See Recent Projects</a>
-    </div>
-    <div style="text-align:center;">
-      <div class="hero-stars">★★★★★</div>
-      <h1>Transform Your LA Home<br>Without the Stress</h1>
-      <p class="hero-sub">Real crews. Real quality. No hidden fees. No endless delays - just beautiful results.</p>
-    </div>
+  <!-- Hero CTA buttons — top of video -->
+  <div style="position:absolute;top:90px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:90%;max-width:420px;">
+    <a href="#contact" class="btn-green" style="flex:1;min-width:160px;justify-content:center;text-align:center;">Get Your FREE Estimate</a>
+    <a href="portfolio.html" class="btn-wht" style="flex:1;min-width:160px;justify-content:center;text-align:center;">See Recent Projects</a>
+  </div>
+  <!-- Hero text — bottom of video -->
+  <div class="hero-content" style="position:absolute;bottom:60px;left:0;right:0;text-align:center;padding:0 20px;z-index:3;">
+    <div class="hero-stars">★★★★★</div>
+    <h1>Transform Your LA Home<br>Without the Stress</h1>
+    <p class="hero-sub">Real crews. Real quality. No hidden fees. No endless delays - just beautiful results.</p>
   </div>
 </section>
 
@@ -2127,65 +2127,63 @@ async function submitExit(e) {
 <script>
 /* ── Carousel Touch + Auto-scroll ── */
 (function(){
-  function initDragCarousel(wrapEl, trackEl){
-    if(!wrapEl || !trackEl) return;
-    var startX=0, lastX=0, isDragging=false, resumeTimer=null;
-    var offsetX=0;
+  function makeScrollable(wrap, track){
+    if(!wrap || !track) return;
+    var isDown=false, startX=0, scrollLeft=0;
 
-    function getAnimOffset(){
-      var style=window.getComputedStyle(trackEl);
-      var mat=style.transform;
-      if(!mat||mat==='none') return 0;
-      var vals=mat.match(/matrix.*\((.+)\)/);
-      return vals ? parseFloat(vals[1].split(', ')[4]) : 0;
+    // Pause animation and get current visual position
+    function freeze(){
+      var rect = track.getBoundingClientRect();
+      var wrapRect = wrap.getBoundingClientRect();
+      var curX = rect.left - wrapRect.left;
+      track.style.animationPlayState = 'paused';
+      track.style.animation = 'none';
+      track.style.transform = 'translateX('+curX+'px)';
+      return curX;
     }
 
-    function pauseAnim(){
-      var cur=getAnimOffset();
-      trackEl.style.animationPlayState='paused';
-      trackEl.style.transform='translateX('+cur+'px)';
-      trackEl.style.animation='none';
-      offsetX=cur;
+    function unfreeze(){
+      track.style.transform = '';
+      track.style.animation = '';
     }
 
-    function resumeAnim(){
-      trackEl.style.transform='';
-      trackEl.style.animation='';
-      trackEl.style.animationPlayState='running';
-    }
+    var frozenX = 0, resumeTimer = null;
 
-    wrapEl.addEventListener('touchstart',function(e){
-      isDragging=true;
-      startX=e.touches[0].clientX;
-      lastX=startX;
-      pauseAnim();
+    wrap.addEventListener('touchstart', function(e){
+      isDown = true;
+      startX = e.touches[0].clientX;
+      frozenX = freeze();
       if(resumeTimer) clearTimeout(resumeTimer);
-    },{passive:true});
+    }, {passive:true});
 
-    wrapEl.addEventListener('touchmove',function(e){
-      if(!isDragging) return;
-      var dx=e.touches[0].clientX-lastX;
-      lastX=e.touches[0].clientX;
-      offsetX+=dx;
-      trackEl.style.transform='translateX('+offsetX+'px)';
-    },{passive:true});
+    wrap.addEventListener('touchmove', function(e){
+      if(!isDown) return;
+      var dx = e.touches[0].clientX - startX;
+      track.style.transform = 'translateX('+(frozenX+dx)+'px)';
+    }, {passive:true});
 
-    wrapEl.addEventListener('touchend',function(){
-      isDragging=false;
-      resumeTimer=setTimeout(resumeAnim,3000);
-    },{passive:true});
+    wrap.addEventListener('touchend', function(e){
+      isDown = false;
+      var dx = e.changedTouches[0].clientX - startX;
+      frozenX = frozenX + dx;
+      resumeTimer = setTimeout(function(){
+        track.style.transform = '';
+        track.style.animation = '';
+      }, 2500);
+    }, {passive:true});
   }
 
-  var reviewWrap=document.querySelector('.testi-carousel-wrap');
-  var reviewTrack=document.getElementById('testiCarousel');
-  if(reviewWrap&&reviewTrack) initDragCarousel(reviewWrap,reviewTrack);
+  // Review carousel
+  makeScrollable(
+    document.querySelector('.testi-carousel-wrap'),
+    document.getElementById('testiCarousel')
+  );
 
+  // Crew carousels
   document.querySelectorAll('.cc-track').forEach(function(track){
-    var inner=track.querySelector('.cc-inner');
-    if(inner) initDragCarousel(track,inner);
+    makeScrollable(track, track.querySelector('.cc-inner'));
   });
 })();
-</script>
 
 </body>
 </html>
