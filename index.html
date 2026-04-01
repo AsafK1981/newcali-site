@@ -715,56 +715,9 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   }
 }
 
-@media(max-width:960px){
-  .testi-section{overflow:visible!important;}
-  .testi-carousel-wrap{overflow-x:auto!important;overflow-y:visible!important;}
-  .crew-carousel{overflow:visible!important;}
-  .cc-track{overflow-x:auto!important;overflow-y:visible!important;}
-}
 
 
-@media(max-width:960px){
-  /* Hide animated carousel on mobile */
-  .testi-carousel-wrap{ display:none!important; }
-  /* Show mobile scroll version */
-  .testi-mobile-scroll{
-    display:flex!important;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    gap:14px;
-    padding:0 16px 20px;
-    scroll-snap-type:x mandatory;
-  }
-  .testi-mobile-scroll .testi-card{
-    scroll-snap-align:start;
-    flex-shrink:0;
-    width:280px!important;
-  }
-  /* Hide animated crew carousel on mobile */
-  .cc-track{ display:none!important; }
-  /* Show mobile crew scroll */
-  .cc-mobile-scroll{
-    display:flex!important;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
-    gap:12px;
-    padding:0 16px 16px;
-  }
-  .cc-mobile-scroll .cc-card{
-    flex-shrink:0;
-    width:200px;
-    height:240px;
-    border-radius:10px;
-    overflow:hidden;
-  }
-  .cc-mobile-scroll .cc-card img{
-    width:100%;height:100%;object-fit:cover;
-  }
-}
-@media(min-width:961px){
-  .testi-mobile-scroll{ display:none; }
-  .cc-mobile-scroll{ display:none; }
-}
+
 
 @media(max-width:960px){
   .hero-abs-btns{display:none!important;}
@@ -807,7 +760,54 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   .hero-btns{display:flex!important;gap:8px;justify-content:center;flex-wrap:nowrap;}
   .hero-btns a{font-size:10px!important;padding:7px 12px!important;flex:1;text-align:center;}
 }
-</style>
+
+/* ── Mobile Carousels ── */
+.testi-mobile-scroll{ display:none; }
+.cc-mobile-scroll{ display:none; }
+@media(max-width:960px){
+  /* Hide auto-scroll versions */
+  .testi-carousel-wrap{ display:none!important; }
+  .cc-row{ display:none!important; }
+  /* Show native scroll versions */
+  .testi-mobile-scroll{
+    display:flex!important;
+    overflow-x:scroll;
+    -webkit-overflow-scrolling:touch;
+    gap:14px;
+    padding:16px 16px 24px;
+    width:100%;
+    box-sizing:border-box;
+  }
+  .testi-mobile-scroll .testi-card{
+    flex-shrink:0;
+    width:280px!important;
+  }
+  .cc-mobile-scroll{
+    display:flex!important;
+    overflow-x:scroll;
+    -webkit-overflow-scrolling:touch;
+    gap:10px;
+    padding:16px 16px 24px;
+    width:100%;
+    box-sizing:border-box;
+  }
+  .cc-mobile-scroll .cc-card{
+    flex-shrink:0;
+    width:180px;
+    height:220px;
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .cc-mobile-scroll .cc-card img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  /* Fix parent overflow so scroll works */
+  .testi-section{ overflow:visible!important; }
+  .crew-carousel{ overflow:visible!important; }
+}
+@media(max-width:960px){
+  .proof-ticker{ display:none!important; }
+}</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
