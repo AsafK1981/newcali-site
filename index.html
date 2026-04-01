@@ -619,57 +619,6 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
   100% { transform: translateX(-50%); }
 }
 
-.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;cursor:pointer;padding:8px;background:none;border:none;z-index:400;width:40px;height:40px}
-.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
-.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:#fff;border-top:3px solid var(--green);z-index:299;box-shadow:0 8px 32px rgba(0,0,0,.15)}
-.mobile-menu.open{display:block}
-.mobile-menu a{display:block;padding:16px 24px;color:var(--text);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid #eee}
-.mobile-menu .mm-cta{background:var(--green);color:#fff!important;text-align:center;font-weight:700;margin:12px 16px;border-radius:4px;padding:14px 24px;border-bottom:none!important}
-@media(max-width:960px){.hamburger{display:flex}.nav-phone{display:none!important}.btn-nav{display:none!important}}
-
-@media(max-width:960px){
-  body{background-image:none}
-  .proof-ticker{display:none!important}
-  .hero{
-    flex-direction:column!important;
-    height:auto!important;
-    min-height:0!important;
-    margin-top:72px;
-    overflow:visible!important;
-    display:block!important;
-  }
-  .hero-overlay{display:none!important}
-  .hero video{
-    position:relative!important;
-    inset:auto!important;
-    transform:none!important;
-    width:100%!important;
-    height:auto!important;
-    aspect-ratio:16/9;
-    display:block;
-    object-fit:cover!important;
-  }
-  .hero-content{
-    position:relative!important;
-    transform:none!important;
-    background:var(--green-dk);
-    padding:12px 16px 10px;
-    text-align:center;
-    max-width:100%!important;
-    animation:none!important;
-    opacity:1!important;
-  }
-  .hero-stars{font-size:16px;margin-bottom:4px;color:#ffd700;opacity:1!important;animation:none!important}
-  .hero h1{font-size:16px!important;line-height:1.2;margin-bottom:4px;color:white;text-shadow:none;opacity:1!important;animation:none!important}
-  .hero-sub{font-size:10px!important;margin-bottom:8px;color:rgba(255,255,255,.9);opacity:1!important;animation:none!important}
-  .hero-btns{display:flex!important;gap:8px;justify-content:center;flex-wrap:nowrap}
-  .hero-btns .btn-green,.hero-btns .btn-wht{font-size:10px!important;padding:7px 12px!important;flex:1;max-width:160px;text-align:center;background:rgba(255,255,255,.15)!important;color:white!important;border:1.5px solid rgba(255,255,255,.75)!important}
-  .hero-abs-btns{display:none!important}
-}
-
 @media(max-width:960px){
   .testi-section{overflow:visible!important}
   .testi-carousel-wrap{display:none!important}
@@ -678,26 +627,25 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
     gap:14px;
-    padding:12px 16px 20px;
+    padding:12px 16px 24px;
     width:100%;
     box-sizing:border-box;
+    scroll-snap-type:x mandatory;
   }
-  .testi-mobile-scroll .testi-card{flex-shrink:0;width:280px!important}
-  .crew-carousel{overflow:visible!important}
   .cc-row{display:none!important}
+  .crew-carousel{overflow:visible!important}
   .cc-mobile-scroll{
     display:flex!important;
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
     gap:10px;
-    padding:12px 16px 20px;
+    padding:12px 16px 24px;
+    scroll-snap-type:x proximity;
   }
-  .cc-mobile-scroll img{width:180px;height:220px;object-fit:cover;border-radius:10px;flex-shrink:0;display:block}
 }
-@media(min-width:961px){.testi-mobile-scroll{display:none}.cc-mobile-scroll{display:none}}
-
-@media(max-width:960px){
-  .contact video{height:200px!important;filter:brightness(1.3) contrast(1.05)!important;}
+@media(min-width:961px){
+  .testi-mobile-scroll{display:none!important}
+  .cc-mobile-scroll{display:none!important}
 }
 </style>
 </head>
@@ -722,23 +670,7 @@ nav, section, footer, div.trust, .wa-float, .cursor-dot, .cursor-ring {
     <a href="tel:8002161005" class="nav-phone">(800) 216-1005</a>
     <a href="#contact" class="btn-nav">Free Estimate</a>
   </div>
-  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="portfolio.html" onclick="closeMenu()">Recent Transformations</a>
-  <a href="#services" onclick="closeMenu()">Services</a>
-  <a href="#testimonials" onclick="closeMenu()">Reviews</a>
-  <a href="#contact" onclick="closeMenu()">Contact</a>
-  <a href="tel:8002161005" style="color:var(--green);font-weight:700;">📞 (800) 216-1005</a>
-  <a href="#contact" class="mm-cta" onclick="closeMenu()">Get FREE Estimate →</a>
-</div>
-<script>
-function toggleMenu(){document.getElementById('hamburger').classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open');}
-function closeMenu(){document.getElementById('hamburger').classList.remove('open');document.getElementById('mobileMenu').classList.remove('open');}
-document.addEventListener('click',function(e){var m=document.getElementById('mobileMenu');var b=document.getElementById('hamburger');if(m&&b&&!m.contains(e.target)&&!b.contains(e.target))closeMenu();});
-</script>
 
 <!-- Social Proof Ticker -->
 <div class="proof-ticker">
@@ -774,6 +706,49 @@ document.addEventListener('click',function(e){var m=document.getElementById('mob
     <div class="hero-btns">
       <a href="#contact" class="btn-green">Get Your FREE Estimate</a>
       <a href="portfolio.html" class="btn-wht">See Recent Projects</a>
+    </div>
+  </div>
+
+  <div class="testi-mobile-scroll">
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Amazing work on our kitchen remodel! Professional, on time, stunning results.&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Jonathan B. &bull; Culver City</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;New Cali did an incredible job with our bathroom. Fast, clean, and truly professional.&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Tim Y. &bull; Marina Del Rey</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Garage converted to ADU — Asaf and his team were fantastic from start to finish!&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Nyoka B. &bull; Inglewood</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Best contractor in LA. Transparent pricing, quality work, cleaned up every day.&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Martin P. &bull; El Segundo</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Our full home remodel exceeded every expectation. Simply the best in the business!&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Gail S. &bull; Playa Vista</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Outstanding kitchen remodel. Professional crew, communicative, flawless work.&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Andrew H. &bull; Hawthorne</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Hired for bathroom remodel and fell in love with the result. Will use again!&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Trisha L. &bull; Culver City</div>
+    </div>
+    <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;scroll-snap-align:start;">
+      <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+      <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;They remodeled our entire first floor. On budget, on time, zero surprises. 10/10.&rdquo;</p>
+      <div style="font-size:11px;font-weight:700;color:#2c5f33;margin-top:auto;">Joe E. &bull; Los Angeles</div>
     </div>
   </div>
 </section>
@@ -847,7 +822,6 @@ document.addEventListener('click',function(e){var m=document.getElementById('mob
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1366,40 +1340,6 @@ document.addEventListener('click',function(e){var m=document.getElementById('mob
     <a href="https://www.yelp.com/biz/new-cali-construction-culver-city" target="_blank" style="display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:11px;color:var(--green);font-weight:600;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;">Read full review <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
   </div>
 </div>
-
-
-    <div class="testi-mobile-scroll">
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Amazing work on our kitchen remodel! Professional, on time, and the results were stunning. Highly recommend!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Jonathan B. &middot; Culver City</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;New Cali Construction did an incredible job with our bathroom. Clean, fast, and truly professional crew.&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Tim Y. &middot; Marina Del Rey</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;We had our garage converted to an ADU. Asaf and his team were fantastic from start to finish. 10/10!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Nyoka B. &middot; Inglewood</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Best contractor in the LA area. Transparent pricing, quality work, and they cleaned up every day!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Martin P. &middot; El Segundo</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Our full home remodel exceeded every expectation. New Cali Construction is simply the best!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Gail S. &middot; Playa Vista</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Outstanding kitchen remodel. The team was professional, communicative, and the work was flawless.&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Andrew H. &middot; Hawthorne</div>
-      </div>
-    </div>
       </div>
     </div>
     <div style="text-align:center;margin-top:40px;padding-bottom:20px;">
@@ -1445,9 +1385,6 @@ document.addEventListener('click',function(e){var m=document.getElementById('mob
     </div>
   </div>
 
-  <!-- Mobile crew scroll -->
-  <div id="cc-mobile-scroll" class="cc-mobile-scroll"></div>
-  
   <!-- Fade edges -->
   <div style="position:absolute;top:0;left:0;width:120px;height:100%;background:linear-gradient(to right,#0f1a10,transparent);z-index:3;pointer-events:none;"></div>
   <div style="position:absolute;top:0;right:0;width:120px;height:100%;background:linear-gradient(to left,#0f1a10,transparent);z-index:3;pointer-events:none;"></div>
@@ -1627,7 +1564,7 @@ document.addEventListener('click',function(e){var m=document.getElementById('mob
       <p class="eyebrow">Get in Touch</p>
       <h2 class="sec-title">Let's Build<br>Something <em>Beautiful</em></h2>
       <p>Free in-home consultation. No pressure - just honest expertise and a clear plan to bring your vision to life.</p>
-      <video autoplay muted loop playsinline style="width:100%;border-radius:6px;height:260px;object-fit:cover;display:block;margin-top:24px;margin-bottom:22px;filter:brightness(1.25) contrast(1.05);">
+      <video autoplay muted loop playsinline style="width:100%;border-radius:6px;height:260px;object-fit:cover;display:block;margin-top:24px;margin-bottom:22px;filter:brightness(1.35) contrast(1.05);">
         <source src="promo.mp4" type="video/mp4">
       </video>
       <div class="cdets">
@@ -1991,121 +1928,23 @@ async function submitExit(e) {
 }
 </script>
 <script>
-// Mobile crew carousel
 (function(){
   if(window.innerWidth > 960) return;
+  if(typeof allImgs === 'undefined') return;
   var section = document.querySelector('.crew-carousel');
-  if(!section || typeof allImgs === 'undefined') return;
+  if(!section) return;
   var div = document.createElement('div');
   div.className = 'cc-mobile-scroll';
+  div.style.cssText = 'display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:10px;padding:12px 16px 24px;';
   allImgs.slice(0,12).forEach(function(src){
     var img = document.createElement('img');
-    img.src = src; img.loading = 'lazy';
-    img.alt = 'New Cali crew';
+    img.src = src;
+    img.loading = 'lazy';
+    img.style.cssText = 'flex-shrink:0;width:160px;height:200px;object-fit:cover;border-radius:8px;display:block;';
     div.appendChild(img);
   });
   section.appendChild(div);
-  // fix parent overflow
-  var el = section;
-  for(var i=0;i<5;i++){
-    el=el.parentElement;
-    if(!el)break;
-    if(getComputedStyle(el).overflow==='hidden')el.style.overflow='visible';
-  }
 })();
 </script>
-
-<script>
-/* Crew Carousel */
-(function(){
-  var imgs = [
-    'https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?w=400',
-    'https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?w=400',
-    'https://images.pexels.com/photos/7534561/pexels-photo-7534561.jpeg?w=400',
-    'https://images.pexels.com/photos/5691623/pexels-photo-5691623.jpeg?w=400',
-    'https://images.pexels.com/photos/8961068/pexels-photo-8961068.jpeg?w=400',
-    'https://images.pexels.com/photos/5691624/pexels-photo-5691624.jpeg?w=400',
-    'https://images.pexels.com/photos/8082559/pexels-photo-8082559.jpeg?w=400',
-    'https://images.pexels.com/photos/7218892/pexels-photo-7218892.jpeg?w=400',
-    'https://images.pexels.com/photos/4246120/pexels-photo-4246120.jpeg?w=400',
-    'https://images.pexels.com/photos/8961070/pexels-photo-8961070.jpeg?w=400'
-  ];
-  
-  var row1 = imgs.slice(0,5);
-  var row2 = imgs.slice(5,10);
-  
-  function buildRow(id, srcs){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var doubled = srcs.concat(srcs);
-    doubled.forEach(function(src){
-      var card = document.createElement('div');
-      card.className = 'cc-card';
-      var img = document.createElement('img');
-      img.src = src;
-      img.loading = 'lazy';
-      img.alt = 'New Cali Construction crew';
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-      card.appendChild(img);
-      el.appendChild(card);
-    });
-  }
-  
-  buildRow('ccI1', row1);
-  buildRow('ccI2', row2);
-  
-  // Mobile scroll version
-  if(window.innerWidth <= 960){
-    var mobileDiv = document.getElementById('cc-mobile-scroll');
-    if(mobileDiv){
-      imgs.forEach(function(src){
-        var card = document.createElement('div');
-        card.className = 'cc-card';
-        var img = document.createElement('img');
-        img.src = src;
-        img.loading = 'lazy';
-        img.alt = 'New Cali Construction crew';
-        card.appendChild(img);
-        mobileDiv.appendChild(card);
-      });
-    }
-  }
-})();
-</script>
-</body>
-</html
-    <div class="testi-mobile-scroll">
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Amazing work on our kitchen remodel! Professional, on time, and the results were stunning. Highly recommend!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Jonathan B. &middot; Culver City</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;New Cali Construction did an incredible job with our bathroom. Clean, fast, and truly professional crew.&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Tim Y. &middot; Marina Del Rey</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;We had our garage converted to an ADU. Asaf and his team were fantastic from start to finish. 10/10!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Nyoka B. &middot; Inglewood</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Best contractor in the LA area. Transparent pricing, quality work, and they cleaned up every day!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Martin P. &middot; El Segundo</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Our full home remodel exceeded every expectation. New Cali Construction is simply the best!&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Gail S. &middot; Playa Vista</div>
-      </div>
-      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
-        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Outstanding kitchen remodel. The team was professional, communicative, and the work was flawless.&rdquo;</p>
-        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Andrew H. &middot; Hawthorne</div>
-      </div>
-    </div>
-
 </body>
 </html>
