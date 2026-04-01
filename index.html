@@ -172,7 +172,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 
 /* HERO */
 .hero{position:relative;height:100svh;min-height:500px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
-.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center center;transform:scale(1.0);object-fit:cover;}
+.hero video{position:absolute;left:0;top:50%;width:100%;height:auto;transform:translateY(-50%);z-index:0;min-height:100%;object-fit:cover;}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.30)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
@@ -678,6 +678,38 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   .hamburger{display:flex}
   .nav-phone{display:none}
   .btn-nav{display:none}
+}
+
+@media(max-width:960px){
+  .testi-carousel-wrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x mandatory;
+    mask-image:none;
+    -webkit-mask-image:none;
+    padding:20px 16px 30px;
+    cursor:default;
+  }
+  .testi-carousel{
+    animation:none!important;
+    gap:14px;
+  }
+  .testi-card{
+    scroll-snap-align:start;
+    flex-shrink:0;
+  }
+}
+
+@media(max-width:960px){
+  .crew-carousel{overflow:hidden}
+  .cc-track{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .cc-inner{
+    animation:none!important;
+    gap:10px;
+  }
 }
 </style>
 <script type="application/ld+json">
@@ -2124,118 +2156,27 @@ async function submitExit(e) {
 
 
 
+
+
 <script>
-/* CAROUSEL TOUCH - clean simple version */
-(function() {
-  function addTouch(container, slider) {
-    if (!container || !slider) return;
-    
-    var isDragging = false;
-    var startX = 0;
-    var startTime = 0;
-    var lastX = 0;
-    var velocity = 0;
-    var currentTranslate = 0;
-    var raf = null;
-    var resumeTimer = null;
-
-    // Get current animated position
-    function getLiveX() {
-      var transform = window.getComputedStyle(slider).transform;
-      if (!transform || transform === 'none') return 0;
-      var parts = transform.split(',');
-      if (parts.length >= 5) return parseFloat(parts[4]);
-      return 0;
-    }
-
-    // Stop animation, lock in current position
-    function lockPosition() {
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-      if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; }
-      var liveX = getLiveX();
-      slider.style.animation = 'none';
-      slider.style.transform = 'translateX(' + liveX + 'px)';
-      currentTranslate = liveX;
-    }
-
-    // Let animation run again
-    function unlockPosition() {
-      slider.style.animation = '';
-      slider.style.transform = '';
-      currentTranslate = 0;
-    }
-
-    container.addEventListener('touchstart', function(e) {
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      lastX = startX;
-      startTime = Date.now();
-      velocity = 0;
-      lockPosition();
-    }, { passive: true });
-
-    container.addEventListener('touchmove', function(e) {
-      if (!isDragging) return;
-      var x = e.touches[0].clientX;
-      var dx = x - lastX;
-      velocity = dx;
-      lastX = x;
-      currentTranslate += dx;
-      slider.style.transform = 'translateX(' + currentTranslate + 'px)';
-    }, { passive: true });
-
-    container.addEventListener('touchend', function() {
-      isDragging = false;
-      
-      // Apply momentum
-      function coast() {
-        velocity *= 0.92;
-        currentTranslate += velocity;
-        slider.style.transform = 'translateX(' + currentTranslate + 'px)';
-        if (Math.abs(velocity) > 0.5) {
-          raf = requestAnimationFrame(coast);
-        } else {
-          // Resume auto-scroll after 2s
-          resumeTimer = setTimeout(unlockPosition, 2000);
-        }
-      }
-      raf = requestAnimationFrame(coast);
-    }, { passive: true });
-  }
-
-  // Apply to review carousel
-  addTouch(
-    document.querySelector('.testi-carousel-wrap'),
-    document.querySelector('#testiCarousel')
-  );
-
-  // Apply to crew carousels
-  var ccTracks = document.querySelectorAll('.cc-track');
-  for (var i = 0; i < ccTracks.length; i++) {
-    addTouch(ccTracks[i], ccTracks[i].querySelector('.cc-inner'));
-  }
-
-  // Make testimonial cards clickable (detect drag vs tap)
-  var cards = document.querySelectorAll('.testi-card');
-  cards.forEach(function(card) {
-    var startTapX = 0, moved = false;
-    card.addEventListener('touchstart', function(e) {
-      startTapX = e.touches[0].clientX;
-      moved = false;
-    }, { passive: true });
-    card.addEventListener('touchmove', function(e) {
-      if (Math.abs(e.touches[0].clientX - startTapX) > 8) moved = true;
-    }, { passive: true });
-    card.addEventListener('touchend', function() {
-      if (!moved) window.open('https://www.yelp.com/biz/new-cali-construction-culver-city', '_blank');
-    }, { passive: true });
-    card.addEventListener('click', function(e) {
-      if (e.target.tagName !== 'A') window.open('https://www.yelp.com/biz/new-cali-construction-culver-city', '_blank');
+/* Testimonial cards — click to Yelp (desktop) */
+if(window.innerWidth > 960){
+  document.querySelectorAll('.testi-card').forEach(function(card){
+    card.style.cursor='pointer';
+    card.addEventListener('click',function(e){
+      if(e.target.tagName!=='A') window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank');
     });
-    card.style.cursor = 'pointer';
   });
-})();
+}
+/* Testimonial cards — tap to Yelp (mobile, detect vs swipe) */
+if(window.innerWidth <= 960){
+  document.querySelectorAll('.testi-card').forEach(function(card){
+    var sx=0,moved=false;
+    card.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;moved=false;},{passive:true});
+    card.addEventListener('touchmove',function(e){if(Math.abs(e.touches[0].clientX-sx)>10)moved=true;},{passive:true});
+    card.addEventListener('touchend',function(){if(!moved)window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank');},{passive:true});
+  });
+}
 </script>
-
 </body>
 </html>
