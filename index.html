@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -2097,4 +2096,129 @@ async function submitExit(e) {
   try {
     await fetch('https://api.web3forms.com/submit', {method:'POST', body: new FormData(e.target)});
   } catch(err) {}
+<<<<<<< HEAD
   document.getElementById('exitPopup').innerHTML = '<div style="padding:48px;text-align:center;"><div style="font-size:44px;margin-bottom:12px">🎉</div><h3
+=======
+  document.getElementById('exitPopup').innerHTML = '<div style="padding:48px;text-align:center;"><div style="font-size:44px;margin-bottom:12px">🎉</div><h3 style="font-family:Merriweather,serif;color:var(--green-dk);font-size:22px;margin-bottom:8px;">Thanks! We\'ll be in touch soon.</h3><p style="color:var(--muted);">Or call us now at <a href="tel:8002161005" style="color:var(--green);font-weight:600;">(800) 216-1005</a></p><button onclick="closeExit()" style="margin-top:20px;background:var(--green);color:white;border:none;padding:10px 24px;border-radius:4px;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;">Close</button></div>';
+}
+</script>
+<script>
+// Mobile crew carousel
+(function(){
+  if(window.innerWidth > 960) return;
+  var section = document.querySelector('.crew-carousel');
+  if(!section || typeof allImgs === 'undefined') return;
+  var div = document.createElement('div');
+  div.className = 'cc-mobile-scroll';
+  allImgs.slice(0,12).forEach(function(src){
+    var img = document.createElement('img');
+    img.src = src; img.loading = 'lazy';
+    img.alt = 'New Cali crew';
+    div.appendChild(img);
+  });
+  section.appendChild(div);
+  // fix parent overflow
+  var el = section;
+  for(var i=0;i<5;i++){
+    el=el.parentElement;
+    if(!el)break;
+    if(getComputedStyle(el).overflow==='hidden')el.style.overflow='visible';
+  }
+})();
+</script>
+
+<script>
+/* Crew Carousel */
+(function(){
+  var imgs = [
+    'https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?w=400',
+    'https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?w=400',
+    'https://images.pexels.com/photos/7534561/pexels-photo-7534561.jpeg?w=400',
+    'https://images.pexels.com/photos/5691623/pexels-photo-5691623.jpeg?w=400',
+    'https://images.pexels.com/photos/8961068/pexels-photo-8961068.jpeg?w=400',
+    'https://images.pexels.com/photos/5691624/pexels-photo-5691624.jpeg?w=400',
+    'https://images.pexels.com/photos/8082559/pexels-photo-8082559.jpeg?w=400',
+    'https://images.pexels.com/photos/7218892/pexels-photo-7218892.jpeg?w=400',
+    'https://images.pexels.com/photos/4246120/pexels-photo-4246120.jpeg?w=400',
+    'https://images.pexels.com/photos/8961070/pexels-photo-8961070.jpeg?w=400'
+  ];
+  
+  var row1 = imgs.slice(0,5);
+  var row2 = imgs.slice(5,10);
+  
+  function buildRow(id, srcs){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var doubled = srcs.concat(srcs);
+    doubled.forEach(function(src){
+      var card = document.createElement('div');
+      card.className = 'cc-card';
+      var img = document.createElement('img');
+      img.src = src;
+      img.loading = 'lazy';
+      img.alt = 'New Cali Construction crew';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      card.appendChild(img);
+      el.appendChild(card);
+    });
+  }
+  
+  buildRow('ccI1', row1);
+  buildRow('ccI2', row2);
+  
+  // Mobile scroll version
+  if(window.innerWidth <= 960){
+    var mobileDiv = document.getElementById('cc-mobile-scroll');
+    if(mobileDiv){
+      imgs.forEach(function(src){
+        var card = document.createElement('div');
+        card.className = 'cc-card';
+        var img = document.createElement('img');
+        img.src = src;
+        img.loading = 'lazy';
+        img.alt = 'New Cali Construction crew';
+        card.appendChild(img);
+        mobileDiv.appendChild(card);
+      });
+    }
+  }
+})();
+</script>
+</body>
+</html
+    <div class="testi-mobile-scroll">
+      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Amazing work on our kitchen remodel! Professional, on time, and the results were stunning. Highly recommend!&rdquo;</p>
+        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Jonathan B. &middot; Culver City</div>
+      </div>
+      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;New Cali Construction did an incredible job with our bathroom. Clean, fast, and truly professional crew.&rdquo;</p>
+        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Tim Y. &middot; Marina Del Rey</div>
+      </div>
+      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;We had our garage converted to an ADU. Asaf and his team were fantastic from start to finish. 10/10!&rdquo;</p>
+        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Nyoka B. &middot; Inglewood</div>
+      </div>
+      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Best contractor in the LA area. Transparent pricing, quality work, and they cleaned up every day!&rdquo;</p>
+        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Martin P. &middot; El Segundo</div>
+      </div>
+      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Our full home remodel exceeded every expectation. New Cali Construction is simply the best!&rdquo;</p>
+        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Gail S. &middot; Playa Vista</div>
+      </div>
+      <div style="flex-shrink:0;width:260px;background:white;border-radius:12px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:#f5a623;font-size:16px;">★★★★★</div>
+        <p style="font-size:13px;color:#333;line-height:1.5;margin:0;">&ldquo;Outstanding kitchen remodel. The team was professional, communicative, and the work was flawless.&rdquo;</p>
+        <div style="font-size:11px;font-weight:700;color:#2c5f33;">Andrew H. &middot; Hawthorne</div>
+      </div>
+    </div>
+
+</body>
+</html>
+>>>>>>> e62a42dac361aa99c5c140fb21c3f7ef6d2fa546
