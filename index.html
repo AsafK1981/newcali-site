@@ -170,8 +170,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 .btn-nav:hover{background:var(--green-dk)}
 
 /* HERO */
+<<<<<<< HEAD
 .hero{position:relative;height:100vh;min-height:540px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:72px}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;object-position:center center}
+=======
+.hero{position:relative;height:100svh;min-height:500px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
+.hero video{position:absolute;left:0;top:50%;width:100%;height:auto;transform:translateY(-50%);z-index:0;min-height:100%;object-fit:cover;}
+>>>>>>> parent of 02b77cb (Update index.html)
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.30)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
@@ -379,6 +384,16 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.72);padding:52px 60px 
   .hdr-c{margin-bottom:36px}
   .sec-title{font-size:clamp(22px,5vw,34px)}
 }
+<<<<<<< HEAD
+=======
+
+@media(max-width:960px){
+  .hero-overlay{background:rgba(0,0,0,.22)!important}
+  .hero video{object-position:center center;transform:none!important}
+  .hero-stars{font-size:18px;margin-bottom:10px}
+  .hero-sub{font-size:13px;margin-bottom:20px}
+}
+>>>>>>> parent of 02b77cb (Update index.html)
 @media(max-width:560px){
   .svc-grid{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
@@ -653,14 +668,25 @@ nav a{color:inherit!important;text-decoration:none!important;}
     aspect-ratio:16/9;
     margin-top:0!important;
   }
+<<<<<<< HEAD
   .hero video{
     object-fit:cover!important;
     width:100%!important;
     height:100%!important;
+=======
+  .testi-carousel{
+    animation:none!important;
+    gap:14px;
+  }
+  .testi-card{
+    scroll-snap-align:start;
+    flex-shrink:0;
+>>>>>>> parent of 02b77cb (Update index.html)
   }
 }
 
 @media(max-width:960px){
+<<<<<<< HEAD
   .contact video, section video:not(.hero video){
     filter:brightness(1.4) contrast(1.05)!important;
   }
@@ -685,6 +711,18 @@ nav a{color:inherit!important;text-decoration:none!important;}
 .hero-below p{font-size:11px;color:rgba(255,255,255,.85);margin:0 0 10px}
 .hero-below .hb-btns{display:flex;gap:8px;justify-content:center}
 .hero-below .hb-btn{flex:1;max-width:160px;text-align:center;background:rgba(255,255,255,.2);color:white;border:1.5px solid rgba(255,255,255,.7);padding:8px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none}
+=======
+  .crew-carousel{overflow:hidden}
+  .cc-track{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .cc-inner{
+    animation:none!important;
+    gap:10px;
+  }
+}
+>>>>>>> parent of 02b77cb (Update index.html)
 </style>
 </head>
 <body>
