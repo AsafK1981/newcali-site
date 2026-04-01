@@ -172,7 +172,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 
 /* HERO */
 .hero{position:relative;height:100svh;min-height:500px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
-.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;background:#000;}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.25)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
@@ -389,7 +389,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.72);padding:52px 60px 
 
 @media(max-width:960px){
   .hero-overlay{background:rgba(0,0,0,.22)!important}
-  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;background:#000;}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
   .hero-stars{font-size:18px;margin-bottom:10px}
   .hero-sub{font-size:13px;margin-bottom:20px}
 }
@@ -720,6 +720,29 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   .testi-carousel-wrap{overflow-x:auto!important;overflow-y:visible!important;}
   .crew-carousel{overflow:visible!important;}
   .cc-track{overflow-x:auto!important;overflow-y:visible!important;}
+}
+
+@media(max-width:960px){
+  .hero{
+    height:auto!important;
+    min-height:0!important;
+    aspect-ratio:16/9;
+    margin-top:64px;
+  }
+  .hero video{
+    object-fit:cover!important;
+    width:100%!important;
+    height:100%!important;
+  }
+  .hero-content{
+    position:absolute;
+    bottom:8px;
+    left:0;right:0;
+    padding:0 12px;
+  }
+  .hero-stars{font-size:14px;margin-bottom:4px;}
+  .hero h1{font-size:16px!important;line-height:1.2;margin-bottom:4px;}
+  .hero-sub{font-size:10px!important;margin-bottom:8px;}
 }
 </style>
 <script type="application/ld+json">
@@ -2168,25 +2191,75 @@ async function submitExit(e) {
 
 
 
+
 <script>
-/* Testimonial cards — click to Yelp (desktop) */
-if(window.innerWidth > 960){
-  document.querySelectorAll('.testi-card').forEach(function(card){
-    card.style.cursor='pointer';
-    card.addEventListener('click',function(e){
-      if(e.target.tagName!=='A') window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank');
-    });
+(function(){
+  if(window.innerWidth > 960) return;
+  
+  // Fix review carousel
+  var wrap = document.querySelector('.testi-carousel-wrap');
+  var track = document.querySelector('#testiCarousel');
+  if(wrap && track){
+    // Stop animation
+    track.style.animation = 'none';
+    track.style.width = 'max-content';
+    
+    // Remove all overflow:hidden from parents
+    var el = wrap;
+    for(var i=0; i<10; i++){
+      el = el.parentElement;
+      if(!el) break;
+      var s = window.getComputedStyle(el).overflow;
+      if(s === 'hidden'){
+        el.style.overflow = 'visible';
+      }
+      var sx = window.getComputedStyle(el).overflowX;
+      if(sx === 'hidden'){
+        el.style.overflowX = 'visible';
+      }
+    }
+    
+    // Make wrap scrollable
+    wrap.style.overflowX = 'auto';
+    wrap.style.overflowY = 'visible';
+    wrap.style.webkitOverflowScrolling = 'touch';
+    wrap.style.maskImage = 'none';
+    wrap.style.webkitMaskImage = 'none';
+    wrap.style.paddingBottom = '16px';
+  }
+
+  // Fix crew carousels  
+  var ccTracks = document.querySelectorAll('.cc-track');
+  ccTracks.forEach(function(ccTrack){
+    var inner = ccTrack.querySelector('.cc-inner');
+    if(!inner) return;
+    
+    inner.style.animation = 'none';
+    inner.style.width = 'max-content';
+    
+    // Remove overflow hidden from parents
+    var el = ccTrack;
+    for(var i=0; i<10; i++){
+      el = el.parentElement;
+      if(!el) break;
+      if(window.getComputedStyle(el).overflow === 'hidden'){
+        el.style.overflow = 'visible';
+      }
+    }
+    
+    ccTrack.style.overflowX = 'auto';
+    ccTrack.style.overflowY = 'visible';
+    ccTrack.style.webkitOverflowScrolling = 'touch';
   });
-}
-/* Testimonial cards — tap to Yelp (mobile, detect vs swipe) */
-if(window.innerWidth <= 960){
+
+  // Cards click to Yelp
   document.querySelectorAll('.testi-card').forEach(function(card){
-    var sx=0,moved=false;
+    var sx=0, moved=false;
     card.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;moved=false;},{passive:true});
-    card.addEventListener('touchmove',function(e){if(Math.abs(e.touches[0].clientX-sx)>10)moved=true;},{passive:true});
+    card.addEventListener('touchmove',function(e){if(Math.abs(e.touches[0].clientX-sx)>8)moved=true;},{passive:true});
     card.addEventListener('touchend',function(){if(!moved)window.open('https://www.yelp.com/biz/new-cali-construction-culver-city','_blank');},{passive:true});
   });
-}
+})();
 </script>
 </body>
 </html>
