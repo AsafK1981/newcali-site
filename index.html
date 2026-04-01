@@ -1637,7 +1637,11 @@ document.addEventListener('click',function(e){var m=document.getElementById('mob
         </div>
         <div class="cdet">
           <div class="cdet-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+<<<<<<< HEAD
           <div class="cdet-txt"><span>Email</span><a href="/cdn-cgi/l/email-protection#662f0800093d07123b28031125070a0f2509081512141305120f09084805090b" onclick="this.href='mailto:Info@NewCaliConstruction.com'"><span class="__cf_email__" data-cfemail="6a23040c052a240f1d290b0603290504191e181f091e03050444090507">[email&#160;protected]</span></a></div>
+=======
+          <div class="cdet-txt"><span>Email</span><a href="#" onclick="this.href='mailto:Info@NewCaliConstruction.com';return false;" style="color:var(--text);text-decoration:none;font-size:14px;font-weight:600;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text)'"><span class="__cf_email__" data-cfemail="773e1911183739120034161b1e3418190403050214031e18195914181a">[email&#160;protected]</span></a></div>
+>>>>>>> parent of d313f4d (Update index.html)
         </div>
         <div class="cdet">
           <div class="cdet-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
@@ -1760,15 +1764,28 @@ function initBA(wId,cId,bId,dId){
   }
 
   wrap.addEventListener('mousedown',function(e){dragging=true;animated=true;onMove(e);e.preventDefault();});
+<<<<<<< HEAD
   wrap.addEventListener('touchstart',function(e){dragging=true;animated=true;onMove(e);},{passive:true});
   window.addEventListener('mousemove',onMove);
   window.addEventListener('touchmove',function(e){if(dragging)onMove(e);},{passive:true});
+=======
+  wrap.addEventListener('touchstart',function(e){dragging=true;animated=true;onMove(e);e.stopPropagation();},{passive:true});
+  window.addEventListener('mousemove',onMove);
+  window.addEventListener('touchmove',function(e){if(dragging){e.preventDefault();onMove(e);}},{passive:false});
+>>>>>>> parent of d313f4d (Update index.html)
   window.addEventListener('mouseup',function(){dragging=false;});
   window.addEventListener('touchend',function(){dragging=false;});
   window.addEventListener('resize',function(){apply(pct);});
 
   apply(0.25);
+<<<<<<< HEAD
   setTimeout(function(){apply(0.25);},400);
+=======
+  setTimeout(function(){apply(0.25);},200);
+  setTimeout(function(){apply(0.25);},600);
+  // Re-apply when images finish loading
+  if(bImg.complete){apply(0.25);}else{bImg.onload=function(){apply(0.25);};}
+>>>>>>> parent of d313f4d (Update index.html)
 
   // Auto-demo animation: slide right then back to 25%, repeat once
   function runDemo(){
