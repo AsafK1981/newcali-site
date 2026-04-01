@@ -172,8 +172,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--white);heig
 
 /* HERO */
 .hero{position:relative;height:100svh;min-height:500px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:0}
-.hero video{position:absolute;left:0;top:50%;width:100%;height:auto;transform:translateY(-50%);z-index:0;min-height:100%;object-fit:cover;}
-.hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.30)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;background:#000;}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.25)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:680px}
 .hero-stars{color:#ffd700;font-size:22px;letter-spacing:4px;margin-bottom:16px;opacity:0;animation:fadeUp .6s .1s forwards}
 .hero h1{font-family:'Merriweather',serif;font-size:clamp(24px,4vw,48px);font-weight:700;line-height:1.2;color:white;margin-bottom:12px;text-shadow:0 2px 16px rgba(0,0,0,.4);opacity:0;animation:fadeUp .7s .3s forwards}
@@ -389,7 +389,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.72);padding:52px 60px 
 
 @media(max-width:960px){
   .hero-overlay{background:rgba(0,0,0,.22)!important}
-  .hero video{object-position:center center;transform:none!important}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;background:#000;}
   .hero-stars{font-size:18px;margin-bottom:10px}
   .hero-sub{font-size:13px;margin-bottom:20px}
 }
@@ -693,6 +693,8 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   .testi-carousel{
     animation:none!important;
     gap:14px;
+    width:max-content!important;
+    padding-right:16px;
   }
   .testi-card{
     scroll-snap-align:start;
@@ -709,7 +711,15 @@ a[href^="tel"] { color: inherit; text-decoration: none; }
   .cc-inner{
     animation:none!important;
     gap:10px;
+    width:max-content!important;
   }
+}
+
+@media(max-width:960px){
+  .testi-section{overflow:visible!important;}
+  .testi-carousel-wrap{overflow-x:auto!important;overflow-y:visible!important;}
+  .crew-carousel{overflow:visible!important;}
+  .cc-track{overflow-x:auto!important;overflow-y:visible!important;}
 }
 </style>
 <script type="application/ld+json">
